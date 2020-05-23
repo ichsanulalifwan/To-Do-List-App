@@ -1,4 +1,4 @@
-package id.ac.unhas.todolistapp.ui
+package id.ac.unhas.todolistapp.ui.todolist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,17 +6,17 @@ import androidx.lifecycle.LiveData
 import id.ac.unhas.todolistapp.room.todo.Todo
 import id.ac.unhas.todolistapp.repository.TodoRepository
 
-class TodoViewModel(application: Application) : AndroidViewModel(application){
+class TodoListViewModel(application: Application) : AndroidViewModel(application){
 
     private val todoRepository = TodoRepository(application)
-    private val todo :LiveData<List<Todo>>? = todoRepository.getTodo()
+    private val todoList : LiveData<List<Todo>> = todoRepository.getTodo()
 
-    fun insertTodo(todo: Todo) {
+    fun addTodo(todo: Todo) {
         todoRepository.insert(todo)
     }
 
-    fun getTodo(): LiveData<List<Todo>>? {
-        return todo
+    fun getTodo(): LiveData<List<Todo>> {
+        return todoList
     }
 
     fun deleteTodo(todo: Todo) {

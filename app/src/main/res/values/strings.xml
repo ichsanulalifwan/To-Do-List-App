@@ -6,4 +6,7 @@
     <string name="todo_icon" translatable="false">task_icon</string>
 
     <string name="delete_todo_button" >delete_todo_button</string>
+    <string name="error_validating_text">Invalid text</string>
+    <string name="add_todo">What do you want to do?</string>
+    <string name="add_btn">Save</string>
 </resources>

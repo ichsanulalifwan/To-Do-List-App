@@ -3,12 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
-    app:startDestination="@id/notesFragment">
+    app:startDestination="@id/todoFragment">
 
     <fragment
-        android:id="@+id/notesFragment"
-        android:name="id.ac.unhas.todolistapp.ui.TodoListFragment"
+        android:id="@+id/todoFragment"
+        android:name="id.ac.unhas.todolistapp.ui.todolist.TodoListFragment"
         android:label="@string/label_todo_list"
-        tools:layout="@layout/todo_list_fragment" />
-
+        tools:layout="@layout/todo_list_fragment">
+        <action
+            android:id="@+id/action_todoList_to_add"
+            app:destination="@id/addTodoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTodoFragment"
+        android:name="id.ac.unhas.todolistapp.ui.addtodo.AddTodoFragment"
+        android:label="add_todo_fragment"
+        tools:layout="@layout/add_todo_fragment" >
+        <action
+            android:id="@+id/action_addTodo_to_todoFragment"
+            app:destination="@id/todoFragment" />
+    </fragment>
 </navigation>

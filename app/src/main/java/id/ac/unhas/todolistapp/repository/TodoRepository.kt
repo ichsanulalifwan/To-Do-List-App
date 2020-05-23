@@ -11,36 +11,36 @@ import kotlinx.coroutines.runBlocking
 
 class TodoRepository(application: Application) {
 
-    private val todoDao: TodoDao?
-    private var todo: LiveData<List<Todo>>? = null
+    private val todoDao: TodoDao
+    private var todo: LiveData<List<Todo>>
 
     init {
-        val db = TodoDatabase.getInstance(application.applicationContext)
-        todoDao = db?.todoDao()
-        todo = todoDao?.getTodo()
+        val db = TodoDatabase.getDatabase(application.applicationContext)
+        todoDao = db!!.todoDao()
+        todo = todoDao.loadAllTodo()
     }
 
-    fun getTodo(): LiveData<List<Todo>>? {
+    fun getTodo(): LiveData<List<Todo>> {
         return todo
     }
 
     fun insert(todo: Todo) = runBlocking {
         this.launch(Dispatchers.IO) {
-            todoDao?.insertTodo(todo)
+            todoDao.insertTodo(todo)
         }
     }
 
     fun delete(todo: Todo) {
         runBlocking {
             this.launch(Dispatchers.IO) {
-                todoDao?.deleteTodo(todo)
+                todoDao.deleteTodo(todo)
             }
         }
     }
 
     fun update(todo: Todo) = runBlocking {
         this.launch(Dispatchers.IO) {
-            todoDao?.updateTodo(todo)
+            todoDao.updateTodo(todo)
         }
     }
 }

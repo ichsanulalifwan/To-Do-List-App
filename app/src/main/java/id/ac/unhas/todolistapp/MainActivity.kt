@@ -1,9 +1,10 @@
 package id.ac.unhas.todolistapp
 
+import android.app.ActivityOptions
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +12,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navigationControl = Navigation.findNavController(this, R.id.nav_host_fragment)
-        NavigationUI.setupActionBarWithNavController(this, navigationControl)
+        startActivity(intent,
+            ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+
+        setupNavigation()
+    }
+
+    private fun setupNavigation() {
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        setupActionBarWithNavController(this, navController)
     }
 }

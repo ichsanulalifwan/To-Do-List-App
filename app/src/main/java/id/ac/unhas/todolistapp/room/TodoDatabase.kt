@@ -14,17 +14,15 @@ abstract class TodoDatabase : RoomDatabase() {
 
     companion object {
 
-        private const val DB_NAME = "TODO_DB"
         private var instance: TodoDatabase? = null
 
-        fun getInstance(context: Context): TodoDatabase? {
+        fun getDatabase(context: Context): TodoDatabase? {
             if (instance == null) {
                 synchronized(TodoDatabase::class) {
-                    instance = Room
-                        .databaseBuilder(
+                    instance = Room.databaseBuilder(
                             context,
                             TodoDatabase::class.java,
-                            DB_NAME
+                            "TODO_DB"
                         )
                         .build()
                 }
