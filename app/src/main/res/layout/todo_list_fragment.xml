@@ -45,5 +45,5 @@
         app:fabSize="normal"
         app:hideOnScroll="true"
         app:layout_anchor="@id/bottomAppBar"
-        android:src="@drawable/ic_add_24dp"/>
+        android:src="@drawable/ic_add_white_24dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -41,8 +41,9 @@
                     android:maxLines="4"
                     android:padding="8dp"
                     android:textAlignment="textStart"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/todo_icon"
-                    tools:layout_editor_absoluteY="9dp"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="What do you want to do?" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,19 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
+import id.ac.unhas.todolistapp.ui.TodoViewModel
 import kotlinx.android.synthetic.main.add_todo_fragment.*
 
 @Suppress("DEPRECATION")
 class AddTodoFragment : Fragment() {
     private var todoList: Todo? = null
 
-    private lateinit var viewModel: AddTodoViewModel
+    private lateinit var viewModel: TodoViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -26,7 +26,7 @@ class AddTodoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddTodoViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(TodoViewModel::class.java)
         viewModel.observableStatus.observe(viewLifecycleOwner, Observer { todo ->
             todo?.let { render(todo) }
         })
@@ -36,8 +36,6 @@ class AddTodoFragment : Fragment() {
             val todo = add_todo.text.toString()
             val add = Todo (id = id, todo = todo )
             viewModel.addTodo(add)
-
-            Toast.makeText(context, todo, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -45,7 +43,7 @@ class AddTodoFragment : Fragment() {
         when (status) {
             true -> {
                 view?.let {
-                    Navigation.findNavController(it).popBackStack()
+                    findNavController().navigate(R.id.action_addTodo_to_todoFragment)
                 }
             }
             false -> add_todo.error = getString(R.string.error_validating_text)

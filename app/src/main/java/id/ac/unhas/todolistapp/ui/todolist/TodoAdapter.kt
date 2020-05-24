@@ -3,7 +3,6 @@ package id.ac.unhas.todolistapp.ui.todolist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil.calculateDiff
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
@@ -33,20 +32,13 @@ class TodoAdapter (
         holder.tvTodo.text = current.todo
     }
 
-   /* internal fun setTodo(todo: List<Todo>) {
+    internal fun setTodo(todo: List<Todo>) {
         this.todoList = todo
         notifyDataSetChanged()
-    }*/
+    }
 
-    internal fun updateTodo(todoList: List<Todo>) {
-        val diffResult = calculateDiff(
-            TodoDiffCallback(
-                this.todoList,
-                todoList
-            )
-        )
-        this.todoList = todoList
-        diffResult.dispatchUpdatesTo(this)
+    fun getTodoAt(position : Int): Todo {
+        return todoList[position]
     }
 
     inner class TodoViewHolder(itemViewGroup: ViewGroup) : RecyclerView.ViewHolder(itemViewGroup) {

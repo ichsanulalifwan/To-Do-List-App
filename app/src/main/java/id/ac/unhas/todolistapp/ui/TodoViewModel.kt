@@ -1,18 +1,28 @@
-package id.ac.unhas.todolistapp.ui.todolist
+package id.ac.unhas.todolistapp.ui
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import id.ac.unhas.todolistapp.room.todo.Todo
 import id.ac.unhas.todolistapp.repository.TodoRepository
 
-class TodoListViewModel(application: Application) : AndroidViewModel(application){
+class TodoViewModel(application: Application) : AndroidViewModel(application){
 
     private val todoRepository = TodoRepository(application)
+    private val status = MutableLiveData<Boolean>()
     private val todoList : LiveData<List<Todo>> = todoRepository.getTodo()
 
+    val observableStatus: LiveData<Boolean>
+        get() = status
+
     fun addTodo(todo: Todo) {
-        todoRepository.insert(todo)
+        status.value = try{
+            todoRepository.insert(todo)
+            true
+        } catch (e: IllegalArgumentException){
+            false
+        }
     }
 
     fun getTodo(): LiveData<List<Todo>> {

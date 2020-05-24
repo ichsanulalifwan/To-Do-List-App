@@ -2,7 +2,7 @@ package id.ac.unhas.todolistapp.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import id.ac.unhas.todolistapp.room.TodoDatabase
+import id.ac.unhas.todolistapp.room.AppDatabase
 import id.ac.unhas.todolistapp.room.todo.Todo
 import id.ac.unhas.todolistapp.room.todo.TodoDao
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ class TodoRepository(application: Application) {
     private var todo: LiveData<List<Todo>>
 
     init {
-        val db = TodoDatabase.getDatabase(application.applicationContext)
+        val db = AppDatabase.getDatabase(application.applicationContext)
         todoDao = db!!.todoDao()
         todo = todoDao.loadAllTodo()
     }
