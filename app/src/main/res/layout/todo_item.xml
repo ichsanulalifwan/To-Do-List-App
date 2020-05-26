@@ -1,51 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/task_card"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/todo_card"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/todo_icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
             android:layout_margin="8dp"
-            android:clickable="true"
-            android:focusable="true">
+            android:contentDescription="@string/todo_icon"
+            android:src="@drawable/ic_calendar_check_outline_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/add"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/todo_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/add_date_text_view"
+                style="?attr/textAppearanceBody2"
+                android:textSize="8sp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textAlignment="textStart"
+                android:text="@string/created" />
 
-                <ImageView
-                    android:id="@+id/todo_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:contentDescription="@string/todo_icon"
-                    android:src="@drawable/ic_calendar_check_outline_24dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.428" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/addDate_text_view"
+                android:textColor="@color/green"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textAlignment="textStart"
+                tools:text="Date View" />
+        </LinearLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/todo_name_text_view"
-                    style="?attr/textAppearanceBody1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="12dp"
-                    android:ellipsize="end"
-                    android:maxLines="4"
-                    android:padding="8dp"
-                    android:textAlignment="textStart"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/todo_icon"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="What do you want to do?" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/todo_name_text_view"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:padding="8dp"
+            android:layout_marginStart="16dp"
+            android:textAlignment="textStart"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/todo_icon"
+            app:layout_constraintStart_toEndOf="@+id/todo_icon"
+            app:layout_constraintTop_toTopOf="@id/todo_icon"
+            app:layout_constraintEnd_toStartOf="@id/due"
+            tools:text="What do you want to do?" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
-</FrameLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/todo_description"
+            style="?attr/textAppearanceCaption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="4"
+            android:ellipsize="end"
+            android:textAlignment="gravity"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/due"
+            app:layout_constraintStart_toEndOf="@id/add"
+            app:layout_constraintTop_toBottomOf="@id/todo_name_text_view"
+            tools:text="@tools:sample/lorem/random" />
+
+        <LinearLayout
+            android:id="@+id/due"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/due_date_text_view"
+                style="?attr/textAppearanceBody2"
+                android:textSize="6sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textAlignment="textStart"
+                android:text="@string/due_date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dueDate_text_view"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:ellipsize="end"
+                android:textAlignment="textStart"
+                tools:text="Date View" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

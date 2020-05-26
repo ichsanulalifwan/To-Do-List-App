@@ -6,9 +6,14 @@ import androidx.room.*
 @Dao
 interface TodoDao {
     @Query("Select * from todo")
-    fun loadAllTodo(): LiveData<List<Todo>>
+    fun loadAllTodo(): LiveData<List<Todo>>?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /*@Query("Select * from todo Where todo =:todo")
+    suspend fun loadSingle(todo : Todo)*/
+    @Query("SELECT * FROM todo ORDER BY created_date DESC")
+    fun sortCreated(): LiveData<List<Todo>>?
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTodo(todo: Todo)
 
     @Update

@@ -19,12 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
-import id.ac.unhas.todolistapp.ui.TodoViewModel
 import kotlinx.android.synthetic.main.todo_list_fragment.*
 
 class TodoListFragment : Fragment () {
 
-    private lateinit var todoViewModel: TodoViewModel
+    private lateinit var todoListViewModel: TodoListViewModel
     private lateinit var deleteIcon: Drawable
     private val clickListener: ClickListener = this::onTodoClicked
     private val rvAdapter = TodoAdapter(clickListener)
@@ -42,8 +41,8 @@ class TodoListFragment : Fragment () {
 
         deleteIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_delete_24px) }!!
 
-        todoViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
-        todoViewModel.getTodo().observe(viewLifecycleOwner, Observer { todo ->
+        todoListViewModel = ViewModelProvider(this).get(TodoListViewModel::class.java)
+        todoListViewModel.getTodo()?.observe(viewLifecycleOwner, Observer { todo ->
             todo?.let { render(todo) }
         })
 
@@ -61,11 +60,11 @@ class TodoListFragment : Fragment () {
                 val alert = AlertDialog.Builder(viewHolder.itemView.context)
                 alert.setTitle("Are you sure to delete this?")
                 alert.setPositiveButton("Yes") { dialog, _ ->
-                    todoViewModel.deleteTodo(rvAdapter.getTodoAt(viewHolder.adapterPosition))
+                    todoListViewModel.deleteTodo(rvAdapter.getTodoAt(viewHolder.adapterPosition))
                     dialog.dismiss()
                 }
                 alert.setNegativeButton("No") { dialog, _ ->
-                    todoViewModel.getTodo().observe(viewLifecycleOwner, Observer { todo ->
+                    todoListViewModel.getTodo()?.observe(viewLifecycleOwner, Observer { todo ->
                         todo?.let { render(todo) }
                     })
                     dialog.dismiss()
@@ -83,10 +82,12 @@ class TodoListFragment : Fragment () {
                 isCurrentlyActive: Boolean
             ) {
                 val itemView = viewHolder.itemView
-
+                val cardMargin = itemView.resources.getDimension(R.dimen.card_margin).toInt()
+                val cardCornerRadius = itemView.resources.getDimension(R.dimen.card_corner_radius)
                 val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
                 if (dX > 0) {
-                    swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                    swipeBackground.setBounds(itemView.left + cardMargin, itemView.top + cardMargin,
+                        dX.toInt() + cardMargin + cardCornerRadius.toInt() * 2, itemView.bottom - cardMargin)
                     deleteIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin,
                         itemView.left + iconMargin + deleteIcon.intrinsicWidth, itemView.bottom - iconMargin)
                 } else {
@@ -115,13 +116,14 @@ class TodoListFragment : Fragment () {
         itemTouchHelper.attachToRecyclerView(todoRecyclerView)
 
         fab.setOnClickListener {
-            findNavController().navigate(R.id.action_todoList_to_add)
+            val action = TodoListFragmentDirections.actionTodoListToAdd()
+            findNavController().navigate(action)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        todoViewModel.getTodo().observe(viewLifecycleOwner, Observer { todo ->
+        todoListViewModel.getTodo()?.observe(viewLifecycleOwner, Observer { todo ->
             todo?.let { render(todo) }
         })
     }
@@ -130,16 +132,20 @@ class TodoListFragment : Fragment () {
         rvAdapter.setTodo(todoList)
         if (todoList.isEmpty()) {
             todoRecyclerView.visibility = View.GONE
-            todoNotFound.visibility = View.VISIBLE
+            empty_list_image.visibility = View.VISIBLE
+            empty_list_message.visibility = View.VISIBLE
         } else {
             todoRecyclerView.visibility = View.VISIBLE
-            todoNotFound.visibility = View.GONE
+            empty_list_image.visibility = View.GONE
+            empty_list_message.visibility = View.GONE
         }
     }
 
-    private fun onTodoClicked(todo: Todo) {/*
-        val action = TodoListFragmen.actionNotesToNoteDetail(todo.id)
-        findNavController().navigate(action)*/
+    private fun onTodoClicked(todo: Todo) {
+        val action = todo.id?.let { TodoListFragmentDirections.actionTodoListToDetail(it) }
+        if (action != null) {
+            findNavController().navigate(action)
+        }
     }
 
     private fun setupRecyclerView() {

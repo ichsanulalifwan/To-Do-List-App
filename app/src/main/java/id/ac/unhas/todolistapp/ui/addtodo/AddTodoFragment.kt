@@ -1,5 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package id.ac.unhas.todolistapp.ui.addtodo
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,14 +14,19 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
-import id.ac.unhas.todolistapp.ui.TodoViewModel
 import kotlinx.android.synthetic.main.add_todo_fragment.*
+import java.text.SimpleDateFormat
+import java.util.*
 
-@Suppress("DEPRECATION")
 class AddTodoFragment : Fragment() {
     private var todoList: Todo? = null
 
-    private lateinit var viewModel: TodoViewModel
+    private lateinit var listViewModel: AddTodoViewModel
+    /*private lateinit var converters : Converters*/
+
+    private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
+    private var timeFormat = SimpleDateFormat("hh:mm s", Locale.getDefault())
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -26,16 +35,52 @@ class AddTodoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TodoViewModel::class.java)
-        viewModel.observableStatus.observe(viewLifecycleOwner, Observer { todo ->
+        listViewModel = ViewModelProviders.of(this).get(AddTodoViewModel::class.java)
+        listViewModel.observableStatus.observe(viewLifecycleOwner, Observer { todo ->
             todo?.let { render(todo) }
         })
 
         add_button.setOnClickListener {
             val id = if (todoList != null) todoList?.id else null
             val todo = add_todo.text.toString()
-            val add = Todo (id = id, todo = todo )
-            viewModel.addTodo(add)
+            val desc = add_description.text.toString()
+            val create = System.currentTimeMillis()
+            val d = add_date.text.toString()
+            val add = Todo (id = id, todo = todo, desc = desc, createDate = create)
+            listViewModel.addTodo(add)
+        }
+
+        btn_date.setOnClickListener{
+            val now = Calendar.getInstance()
+            val datePicker =
+                context?.let { it1 ->
+                    DatePickerDialog(
+                        it1, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                            val selectedDate = Calendar.getInstance()
+                            selectedDate.set(Calendar.YEAR, year)
+                            selectedDate.set(Calendar.MONTH, month)
+                            selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                            val date = dateFormat.format(selectedDate.time)
+                            val due = selectedDate.timeInMillis
+                            add_date.setText(date)
+                        },
+                        now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+                }
+            datePicker?.show()
+        }
+
+        btn_time.setOnClickListener {
+            val nowTime = Calendar.getInstance()
+            val timePicker = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                val selectedTime = Calendar.getInstance()
+                selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                selectedTime.set(Calendar.MINUTE, minute)
+                val time = timeFormat.format(selectedTime.time)
+                add_time.setText(time)
+            },
+                nowTime.get(Calendar.HOUR_OF_DAY), nowTime.get(Calendar.MINUTE), false
+            )
+            timePicker.show()
         }
     }
 
@@ -43,7 +88,7 @@ class AddTodoFragment : Fragment() {
         when (status) {
             true -> {
                 view?.let {
-                    findNavController().navigate(R.id.action_addTodo_to_todoFragment)
+                    findNavController().navigate(R.id.action_add_to_todoList)
                 }
             }
             false -> add_todo.error = getString(R.string.error_validating_text)

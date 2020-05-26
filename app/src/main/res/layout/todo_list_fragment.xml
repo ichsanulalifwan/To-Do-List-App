@@ -6,25 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todoRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/recycler_view_padding_bottom"
+        android:clipToPadding="false"
         tools:listitem="@layout/todo_item"/>
 
+    <ImageView
+        android:id="@+id/empty_list_image"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:contentDescription="@string/empty_image"
+        android:src="@drawable/to_do_list" />
+
     <TextView
-        android:id="@+id/todoNotFound"
+        android:id="@+id/empty_list_message"
+        style="?attr/textAppearanceBody1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/please_add_todo_list"
-        tools:text="Notes not found." />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="400dp"
+        android:text="@string/please_add_todo_list" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -35,7 +41,8 @@
         app:fabAlignmentMode="center"
         app:fabCradleMargin="@dimen/bottom_app_bar_fab_cradle_margin"
         app:fabCradleRoundedCornerRadius="@dimen/bottom_app_bar_fab_cradle_corner_radius"
-        app:hideOnScroll="true"/>
+        app:hideOnScroll="true"
+        app:menu="@menu/menu_main"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -45,5 +52,8 @@
         app:fabSize="normal"
         app:hideOnScroll="true"
         app:layout_anchor="@id/bottomAppBar"
-        android:src="@drawable/ic_add_white_24dp"/>
+        android:src="@drawable/ic_add_24dp"
+        android:tintMode="src_in"
+        app:iconTint="@color/white"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
