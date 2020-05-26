@@ -12,4 +12,11 @@
         android:title="@string/sort_by_due_date"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/search"
+        android:title="@string/search_hint"
+        android:icon="@drawable/ic_search_24px"
+        app:showAsAction="ifRoom">
+    </item>
+
 </menu>

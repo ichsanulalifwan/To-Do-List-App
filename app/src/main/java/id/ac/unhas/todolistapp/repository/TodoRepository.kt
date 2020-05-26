@@ -28,6 +28,10 @@ class TodoRepository(application: Application) {
         return todoDao.sortCreated()
     }
 
+    fun sortByDue(): LiveData<List<Todo>>? {
+        return todoDao.sortDue()
+    }
+
     /*fun getTodo(id: Int) = runBlocking{
         this.launch(Dispatchers.IO) {
             todoDao.loadSingle(id)

@@ -108,7 +108,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/due_date_text_view"
                 style="?attr/textAppearanceBody2"
-                android:textSize="6sp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

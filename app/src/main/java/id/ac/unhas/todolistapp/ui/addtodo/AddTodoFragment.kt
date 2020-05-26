@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -41,13 +42,7 @@ class AddTodoFragment : Fragment() {
         })
 
         add_button.setOnClickListener {
-            val id = if (todoList != null) todoList?.id else null
-            val todo = add_todo.text.toString()
-            val desc = add_description.text.toString()
-            val create = System.currentTimeMillis()
-            val d = add_date.text.toString()
-            val add = Todo (id = id, todo = todo, desc = desc, createDate = create)
-            listViewModel.addTodo(add)
+            findNavController().navigate(R.id.action_add_to_todoList)
         }
 
         btn_date.setOnClickListener{
@@ -61,7 +56,22 @@ class AddTodoFragment : Fragment() {
                             selectedDate.set(Calendar.MONTH, month)
                             selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                             val date = dateFormat.format(selectedDate.time)
+                            val id = if (todoList != null) todoList?.id else null
+                            val todo = add_todo.text.toString()
+                            val desc = add_description.text.toString()
+                            val create = System.currentTimeMillis()
                             val due = selectedDate.timeInMillis
+                            if (add_todo != null || add_description != null) {
+                                val add = Todo(
+                                    id = id,
+                                    todo = todo,
+                                    desc = desc,
+                                    createDate = create,
+                                    dueDate = due
+                                )
+                                listViewModel.addTodo(add)
+                            }
+                            else Toast.makeText(context,"Please Input Title and Description! ", Toast.LENGTH_SHORT).show()
                             add_date.setText(date)
                         },
                         now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
@@ -88,7 +98,7 @@ class AddTodoFragment : Fragment() {
         when (status) {
             true -> {
                 view?.let {
-                    findNavController().navigate(R.id.action_add_to_todoList)
+                   Toast.makeText(context,"Added To-Do Successfully", Toast.LENGTH_SHORT).show()
                 }
             }
             false -> add_todo.error = getString(R.string.error_validating_text)

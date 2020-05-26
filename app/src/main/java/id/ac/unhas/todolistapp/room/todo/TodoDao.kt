@@ -13,6 +13,9 @@ interface TodoDao {
     @Query("SELECT * FROM todo ORDER BY created_date DESC")
     fun sortCreated(): LiveData<List<Todo>>?
 
+    @Query("SELECT * FROM todo ORDER BY due_date DESC")
+    fun sortDue(): LiveData<List<Todo>>?
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTodo(todo: Todo)
 

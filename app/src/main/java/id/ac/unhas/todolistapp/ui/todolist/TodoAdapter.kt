@@ -36,9 +36,11 @@ class TodoAdapter (
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val current = todoList[position]
         val create = dateFormat.format(converter(current.createDate))
+        val due = dateFormat.format(converter(current.dueDate))
         holder.tvTodo.text = current.todo
         holder.tvDesc.text = current.desc
         holder.tvCreated.text = create
+        holder.tvDue.text = due
 
         holder.itemView.setOnClickListener {
             clickListener(todoList[holder.adapterPosition])
