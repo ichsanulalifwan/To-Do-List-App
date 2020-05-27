@@ -4,6 +4,7 @@ package id.ac.unhas.todolistapp.ui.edittodo
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentValues
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -28,6 +29,8 @@ class EditFragment : Fragment() {
     private val args by navArgs<EditFragmentArgs>()
     private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("hh:mm s", Locale.getDefault())
+    private var initialValue = ContentValues()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +51,26 @@ class EditFragment : Fragment() {
             viewModel.observableEditStatus.observe(viewLifecycleOwner, Observer { editStatus ->
                 editStatus?.let { check(editStatus) }
             })
+
+            val id = args.todoId
+            val title = update_title.text.toString()
+            val desc = update_description.text.toString()
+            val create = initialValue.get("created_date")
+            val dueDate = initialValue.get("update_dueDate")
+            val dueTIme = initialValue.get("update_dueTime")
+            val update = System.currentTimeMillis()
+            if(title != null && desc!= null && dueDate != null && dueTIme != null) {
+                val add = Todo(
+                    id = id,
+                    todo = title,
+                    desc = desc,
+                    createDate = create as Long,
+                    dueDate = dueDate as Long,
+                    dueTime = dueTIme as Long,
+                    updateDate = update
+                )
+                viewModel.updateTodo(add)
+            } else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
         }
 
         btn_updateDate.setOnClickListener {
@@ -61,22 +84,8 @@ class EditFragment : Fragment() {
                             selectedDate.set(Calendar.MONTH, month)
                             selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                             val date = dateFormat.format(selectedDate.time)
-                            val id = args.todoId
-                            val title = update_title.text.toString()
-                            val desc = update_description.text.toString()
-                            val create = System.currentTimeMillis()
-                            val due = selectedDate.timeInMillis
-                            if(title != null && desc!= null && due != null) {
-                                val add = Todo(
-                                    id = id,
-                                    todo = title,
-                                    desc = desc,
-                                    createDate = create,
-                                    dueDate = due
-                                )
-                                viewModel.updateTodo(add)
-                            } else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
                             update_dueDate.setText(date)
+                            initialValue.put("update_dueDate", selectedDate.timeInMillis)
                         },
                         now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
                 }
@@ -91,6 +100,7 @@ class EditFragment : Fragment() {
                 selectedTime.set(Calendar.MINUTE, minute)
                 val time = timeFormat.format(selectedTime.time)
                 update_dueTime.setText(time)
+                initialValue.put("update_dueTime", selectedTime.timeInMillis)
             },
                 nowTime.get(Calendar.HOUR_OF_DAY), nowTime.get(Calendar.MINUTE), false
             )
@@ -99,16 +109,18 @@ class EditFragment : Fragment() {
     }
 
     private fun initCurrentTodo(todo: Todo) {
+        createdDateView.text = dateFormat.format(todo.createDate)
         update_title.setText(todo.todo)
         update_description.setText(todo.desc)
         update_dueDate.setText(dateFormat.format(todo.dueDate))
+        update_dueTime.setText(timeFormat.format(todo.dueTime))
+        initialValue.put("created_date", todo.createDate)
     }
 
     private fun check(status: Boolean) {
         when (status) {
             true -> {
-                val action = EditFragmentDirections.actionEditToTodoList()
-                findNavController().navigate(action)
+                findNavController().navigate(R.id.action_edit_to_todoList)
                 Toast.makeText(context,"Successfully Update To-Do ", Toast.LENGTH_SHORT).show()
             }
             false -> Toast.makeText(context,"Failed to Update To-Do", Toast.LENGTH_SHORT).show()

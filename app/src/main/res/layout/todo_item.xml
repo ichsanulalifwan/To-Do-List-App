@@ -32,7 +32,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:layout_marginStart="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/update"
             app:layout_constraintTop_toBottomOf="@id/todo_icon"
             app:layout_constraintStart_toStartOf="parent"
             android:orientation="vertical">
@@ -40,7 +40,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/add_date_text_view"
                 style="?attr/textAppearanceBody2"
-                android:textSize="10sp"
+                android:textSize="9sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -64,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:padding="8dp"
             android:layout_marginStart="16dp"
             android:textAlignment="textStart"
@@ -80,14 +80,16 @@
             style="?attr/textAppearanceCaption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="4"
+            android:maxLines="3"
             android:ellipsize="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textAlignment="gravity"
             android:layout_marginEnd="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/update"
             app:layout_constraintEnd_toStartOf="@id/due"
             app:layout_constraintStart_toEndOf="@id/todo_icon"
             app:layout_constraintTop_toBottomOf="@id/todo_name_text_view"
@@ -100,8 +102,8 @@
             android:layout_marginTop="1dp"
             android:layout_marginEnd="1dp"
             android:layout_marginBottom="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/update"
+            app:layout_constraintTop_toTopOf="@id/todo_name_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             android:orientation="vertical">
 
@@ -121,6 +123,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
+                android:ellipsize="end"
+                android:textAlignment="textStart"
+                tools:text="Date View" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/update"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/todo_description"
+            app:layout_constraintStart_toStartOf="@id/todo_description"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/update_date_text_view"
+                style="?attr/textAppearanceBody2"
+                android:textSize="12sp"
+                android:paddingStart="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textAlignment="textStart"
+                android:text="@string/update" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/updateDate_text_view"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/lime"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:textAlignment="textStart"
                 tools:text="Date View" />

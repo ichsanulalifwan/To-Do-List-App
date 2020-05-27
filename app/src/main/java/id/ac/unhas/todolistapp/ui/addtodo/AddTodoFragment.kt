@@ -4,6 +4,7 @@ package id.ac.unhas.todolistapp.ui.addtodo
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentValues
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class AddTodoFragment : Fragment() {
     private lateinit var listViewModel: AddTodoViewModel
     private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("hh:mm s", Locale.getDefault())
+    private var initialValue = ContentValues()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,6 +39,26 @@ class AddTodoFragment : Fragment() {
         listViewModel = ViewModelProviders.of(this).get(AddTodoViewModel::class.java)
 
         add_button.setOnClickListener {
+            val id = if (todoList != null) todoList?.id else null
+            val title = add_todo.text.toString()
+            val desc = add_description.text.toString()
+            val create = System.currentTimeMillis()
+            val dueDate = initialValue.get("add_dueDate")
+            val dueTime = initialValue.get("add_dueTime")
+            val update = System.currentTimeMillis()
+            if (title != null && desc != null && dueDate != null && dueTime != null) {
+            val add = Todo(
+                id = id,
+                todo = title,
+                desc = desc,
+                createDate = create,
+                dueDate = dueDate as Long,
+                dueTime =  dueTime as Long,
+                updateDate = update
+            )
+                listViewModel.addTodo(add)
+            } else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
+
             listViewModel.observableStatus.observe(viewLifecycleOwner, Observer { todo ->
                 todo?.let { check(todo) }
             })
@@ -53,23 +75,8 @@ class AddTodoFragment : Fragment() {
                             selectedDate.set(Calendar.MONTH, month)
                             selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                             val date = dateFormat.format(selectedDate.time)
-                            val id = if (todoList != null) todoList?.id else null
-                            val title = add_todo.text.toString()
-                            val desc = add_description.text.toString()
-                            val create = System.currentTimeMillis()
-                            val due = selectedDate.timeInMillis
-                            if (title != null && desc != null && due != null) {
-                                val add = Todo(
-                                    id = id,
-                                    todo = title,
-                                    desc = desc,
-                                    createDate = create,
-                                    dueDate = due
-                                )
-                                listViewModel.addTodo(add)
-                            }
-                            else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
                             add_date.setText(date)
+                            initialValue.put("add_dueDate", selectedDate.timeInMillis)
                         },
                         now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
                 }
@@ -84,6 +91,7 @@ class AddTodoFragment : Fragment() {
                 selectedTime.set(Calendar.MINUTE, minute)
                 val time = timeFormat.format(selectedTime.time)
                 add_time.setText(time)
+                initialValue.put("add_dueTime", selectedTime.timeInMillis)
             },
                 nowTime.get(Calendar.HOUR_OF_DAY), nowTime.get(Calendar.MINUTE), false
             )

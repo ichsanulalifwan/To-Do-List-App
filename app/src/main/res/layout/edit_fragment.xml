@@ -17,6 +17,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/created_View"
+        style="?attr/textAppearanceCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:text="@string/created_date_view"
+        app:layout_constraintBottom_toBottomOf="@id/headerEditTextView"
+        app:layout_constraintEnd_toStartOf="@id/createdDateView"
+        app:layout_constraintStart_toEndOf="@id/headerEditTextView"
+        app:layout_constraintTop_toTopOf="@id/headerEditTextView"
+        app:layout_constraintVertical_bias="0.583" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/createdDateView"
+        tyle="?attr/textAppearanceCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/created_date_view"
+        android:textColor="@color/green"
+        android:layout_marginVertical="8dp"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/headerEditTextView"
+        app:layout_constraintEnd_toEndOf="@+id/todo_title_update"
+        app:layout_constraintStart_toEndOf="@id/created_View"
+        app:layout_constraintTop_toTopOf="@id/headerEditTextView"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/todo_title_update"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -76,7 +104,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:hint="@string/date">
+            android:hint="@string/dueDate">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/update_dueDate"
@@ -97,7 +125,7 @@
             android:layout_marginStart="40dp"
             android:background="@drawable/ic_date_range_24px"
             android:backgroundTintMode="src_in"
-            app:backgroundTint="@color/amber"/>
+            app:backgroundTint="@color/red"/>
     </LinearLayout>
 
     <LinearLayout
@@ -117,7 +145,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:hint="@string/time">
+            android:hint="@string/dueTime">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/update_dueTime"
@@ -138,7 +166,7 @@
             android:layout_marginStart="40dp"
             android:background="@drawable/ic_access_time_24px"
             android:backgroundTintMode="src_in"
-            app:backgroundTint="@color/lime"/>
+            app:backgroundTint="@color/red"/>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -149,6 +177,8 @@
         android:layout_marginBottom="16dp"
         android:text="@string/btn_update"
         app:icon="@drawable/ic_update_24px"
+        android:backgroundTintMode="src_in"
+        app:backgroundTint="@color/lime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/time_layout" />

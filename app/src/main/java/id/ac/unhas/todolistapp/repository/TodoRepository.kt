@@ -6,7 +6,6 @@ import id.ac.unhas.todolistapp.room.AppDatabase
 import id.ac.unhas.todolistapp.room.todo.Todo
 import id.ac.unhas.todolistapp.room.todo.TodoDao
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

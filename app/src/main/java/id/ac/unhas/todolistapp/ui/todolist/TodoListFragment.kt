@@ -1,5 +1,7 @@
 package id.ac.unhas.todolistapp.ui.todolist
 
+import android.app.SearchManager
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -7,6 +9,7 @@ import android.graphics.drawable.PaintDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -19,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomappbar.BottomAppBar
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
 import kotlinx.android.synthetic.main.todo_list_fragment.*
@@ -37,47 +41,72 @@ class TodoListFragment : Fragment () {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.todo_list_fragment, container, false)
-        setHasOptionsMenu(true)
-
         if (activity is AppCompatActivity) {
             (activity as AppCompatActivity).setSupportActionBar(bottomAppBar)
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu, inflater)
+        val serarchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search)?.actionView as androidx.appcompat.widget.SearchView
+        searchView.setSearchableInfo(serarchManager.getSearchableInfo(requireActivity().componentName))
+        searchView.maxWidth = Integer.MAX_VALUE
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                rvAdapter.getFilter().filter(query)
+                Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                rvAdapter.getFilter().filter(newText)
+                Toast.makeText(context, newText, Toast.LENGTH_SHORT).show()
+                return false
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_sortCreated -> {
+                todoListViewModel.sortCreated()?.observe(viewLifecycleOwner, Observer { todo ->
+                    todo?.let { render(todo) }
+                })
                 Toast.makeText(context, "Sorted By Created Date", Toast.LENGTH_SHORT).show()
             }
 
             R.id.action_sortDue -> {
+                todoListViewModel.sortDue()?.observe(viewLifecycleOwner, Observer { todo ->
+                    todo?.let { render(todo) }
+                })
                 Toast.makeText(context, "Sorted By Due Date", Toast.LENGTH_SHORT).show()
             }
-
             R.id.search -> {
-                /*val searchView: android.widget.SearchView = s
-                searchView.set*/
+                return true
             }
         }
-        return false
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-
         deleteIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_delete_24px) }!!
 
         todoListViewModel = ViewModelProvider(this).get(TodoListViewModel::class.java)
         todoListViewModel.getTodo()?.observe(viewLifecycleOwner, Observer { todo ->
             todo?.let { render(todo) }
         })
+
+        bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
@@ -121,11 +150,12 @@ class TodoListFragment : Fragment () {
                 val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
                 if (dX > 0) {
                     swipeBackground.setBounds(itemView.left + cardMargin, itemView.top,
-                        dX.toInt() + cardMargin + cardCornerRadius.toInt() * 2, itemView.bottom)
+                        dX.toInt()  + cardMargin + cardCornerRadius.toInt() * 2, itemView.bottom)
                     deleteIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin,
                         itemView.left + iconMargin + deleteIcon.intrinsicWidth, itemView.bottom - iconMargin)
                 } else {
-                    swipeBackground.setBounds(itemView.right + dX.toInt() - cardMargin - cardCornerRadius.toInt() * 2, itemView.top, itemView.right - cardMargin , itemView.bottom)
+                    swipeBackground.setBounds(itemView.right + dX.toInt() - cardMargin - cardCornerRadius.toInt() * 2, itemView.top,
+                        itemView.right - cardMargin , itemView.bottom)
                     deleteIcon.setBounds(itemView.right - iconMargin - deleteIcon.intrinsicWidth, itemView.top + iconMargin,
                         itemView.right - iconMargin, itemView.bottom - iconMargin)
                 }

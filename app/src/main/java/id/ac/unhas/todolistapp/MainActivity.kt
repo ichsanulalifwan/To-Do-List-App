@@ -11,18 +11,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-/*        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())*/
-/*        setSupportActionBar(bottomAppBar)*/
-
         setupNavigation()
-
-        /*val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager*/
-        /*val seacrhItem =*/
     }
 
     private fun setupNavigation() {
-
         val appBarConfiguration = AppBarConfiguration
             .Builder(
                 R.id.todoFragment,

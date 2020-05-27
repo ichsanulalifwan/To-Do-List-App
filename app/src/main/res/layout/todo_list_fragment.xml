@@ -41,8 +41,7 @@
         app:fabAlignmentMode="center"
         app:fabCradleMargin="@dimen/bottom_app_bar_fab_cradle_margin"
         app:fabCradleRoundedCornerRadius="@dimen/bottom_app_bar_fab_cradle_corner_radius"
-        app:hideOnScroll="true"
-        app:menu="@menu/menu_main"/>
+        app:hideOnScroll="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -52,8 +51,5 @@
         app:fabSize="normal"
         app:hideOnScroll="true"
         app:layout_anchor="@id/bottomAppBar"
-        android:src="@drawable/ic_add_24dp"
-        android:tintMode="src_in"
-        app:iconTint="@color/white"/>
-
+        android:src="@drawable/ic_add_24dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

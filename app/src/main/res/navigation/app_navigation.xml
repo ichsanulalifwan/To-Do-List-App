@@ -35,7 +35,8 @@
         tools:layout="@layout/add_todo_fragment" >
         <action
             android:id="@+id/action_add_to_todoList"
-            app:destination="@id/todoFragment" />
+            app:destination="@id/todoFragment"
+            app:enterAnim="@anim/fragment_fade_enter" />
     </fragment>
 
     <fragment

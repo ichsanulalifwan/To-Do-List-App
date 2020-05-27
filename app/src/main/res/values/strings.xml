@@ -10,9 +10,7 @@
     <string name="btn_update">Update</string>
     <string name="label_addTodo">Add Todo Fragment</string>
     <string name="label_editTodo">Edit Todo Fragment</string>
-<!--    <string name="todo_detail_id">id: %s</string>
-    <string name="todo_detail_ttitle">title: %s</string>-->
-    <string name="format">%1$td/%1$tm/%1$tY</string>
+    <string name="never_update">Never Updated</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="btn_edit">Edit</string>
@@ -20,11 +18,13 @@
     <string name="description">Description</string>
     <string name="empty_image">Empty Image</string>
     <string name="edit_to_do">Edit To Do</string>
-    <string name="created">Created</string>
+    <string name="update">Updated</string>
     <string name="due_date">Due Date</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
+    <string name="dueDate">Due Date</string>
+    <string name="dueTime">Due Time</string>
     <string name="sort_by_created_date">Sort By Created Date</string>
     <string name="sort_by_due_date">Sort By Due Date</string>
     <string name="search_hint">Search</string>
+    <string name="created">Created</string>
+    <string name="created_date_view">Created Date</string>
 </resources>
