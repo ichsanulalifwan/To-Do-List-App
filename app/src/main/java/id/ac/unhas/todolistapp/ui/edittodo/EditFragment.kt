@@ -110,6 +110,7 @@ class EditFragment : Fragment() {
 
     private fun initCurrentTodo(todo: Todo) {
         createdDateView.text = dateFormat.format(todo.createDate)
+        createdTimeView.text = timeFormat.format(todo.createDate)
         update_title.setText(todo.todo)
         update_description.setText(todo.desc)
         update_dueDate.setText(dateFormat.format(todo.dueDate))

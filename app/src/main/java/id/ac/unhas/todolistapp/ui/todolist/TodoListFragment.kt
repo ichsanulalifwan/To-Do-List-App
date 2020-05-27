@@ -67,7 +67,6 @@ class TodoListFragment : Fragment () {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 rvAdapter.getFilter().filter(newText)
-                Toast.makeText(context, newText, Toast.LENGTH_SHORT).show()
                 return false
             }
         })

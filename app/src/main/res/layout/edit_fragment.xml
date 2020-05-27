@@ -22,28 +22,47 @@
         style="?attr/textAppearanceCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:text="@string/created_date_view"
         app:layout_constraintBottom_toBottomOf="@id/headerEditTextView"
-        app:layout_constraintEnd_toStartOf="@id/createdDateView"
+        app:layout_constraintEnd_toEndOf="@id/todo_title_update"
         app:layout_constraintStart_toEndOf="@id/headerEditTextView"
         app:layout_constraintTop_toTopOf="@id/headerEditTextView"
-        app:layout_constraintVertical_bias="0.583" />
+        app:layout_constraintEnd_toStartOf="@id/created"/>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/createdDateView"
-        tyle="?attr/textAppearanceCaption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:hint="@string/created_date_view"
-        android:textColor="@color/green"
-        android:layout_marginVertical="8dp"
-        android:textSize="12sp"
+    <LinearLayout
+        android:id="@+id/created"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="12dp"
         app:layout_constraintBottom_toBottomOf="@id/headerEditTextView"
-        app:layout_constraintEnd_toEndOf="@+id/todo_title_update"
+        app:layout_constraintEnd_toEndOf="@id/todo_title_update"
         app:layout_constraintStart_toEndOf="@id/created_View"
-        app:layout_constraintTop_toTopOf="@id/headerEditTextView"/>
+        app:layout_constraintTop_toTopOf="@id/headerEditTextView"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/createdDateView"
+            tyle="?attr/textAppearanceCaption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/created_date_view"
+            android:textColor="@color/green"
+            android:textSize="12sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/createdTimeView"
+            tyle="?attr/textAppearanceCaption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/created_date_view"
+            android:textColor="@color/green"
+            android:layout_marginBottom="5dp"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/todo_title_update"
