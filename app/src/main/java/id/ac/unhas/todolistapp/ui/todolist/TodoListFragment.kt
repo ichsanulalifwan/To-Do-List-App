@@ -2,10 +2,13 @@ package id.ac.unhas.todolistapp.ui.todolist
 
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.PaintDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -20,28 +23,49 @@ import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
 import kotlinx.android.synthetic.main.todo_list_fragment.*
 
+@Suppress("UNREACHABLE_CODE")
 class TodoListFragment : Fragment () {
 
     private lateinit var todoListViewModel: TodoListViewModel
     private lateinit var deleteIcon: Drawable
     private val clickListener: ClickListener = this::onTodoClicked
     private val rvAdapter = TodoAdapter(clickListener)
-    private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
+    private var swipeBackground: PaintDrawable = PaintDrawable()
+    @RequiresApi(Build.VERSION_CODES.M)
+    private var colorBackground = Color.parseColor("#FF0000")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.todo_list_fragment, container, false)
+        setHasOptionsMenu(true)
 
         if (activity is AppCompatActivity) {
             (activity as AppCompatActivity).setSupportActionBar(bottomAppBar)
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_sortCreated -> {
+                Toast.makeText(context, "Sorted By Created Date", Toast.LENGTH_SHORT).show()
+            }
+
+            R.id.action_sortDue -> {
+                Toast.makeText(context, "Sorted By Due Date", Toast.LENGTH_SHORT).show()
+            }
+
+            R.id.search -> {
+                /*val searchView: android.widget.SearchView = s
+                searchView.set*/
+            }
+        }
+        return false
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,6 +105,7 @@ class TodoListFragment : Fragment () {
                 alert.show()
             }
 
+            @RequiresApi(Build.VERSION_CODES.M)
             override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
@@ -95,17 +120,18 @@ class TodoListFragment : Fragment () {
                 val cardCornerRadius = itemView.resources.getDimension(R.dimen.card_corner_radius)
                 val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
                 if (dX > 0) {
-                    swipeBackground.setBounds(itemView.left + cardMargin, itemView.top + cardMargin,
-                        dX.toInt() + cardMargin + cardCornerRadius.toInt() * 2, itemView.bottom - cardMargin)
+                    swipeBackground.setBounds(itemView.left + cardMargin, itemView.top,
+                        dX.toInt() + cardMargin + cardCornerRadius.toInt() * 2, itemView.bottom)
                     deleteIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin,
                         itemView.left + iconMargin + deleteIcon.intrinsicWidth, itemView.bottom - iconMargin)
                 } else {
-                    swipeBackground.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    swipeBackground.setBounds(itemView.right + dX.toInt() - cardMargin - cardCornerRadius.toInt() * 2, itemView.top, itemView.right - cardMargin , itemView.bottom)
                     deleteIcon.setBounds(itemView.right - iconMargin - deleteIcon.intrinsicWidth, itemView.top + iconMargin,
                         itemView.right - iconMargin, itemView.bottom - iconMargin)
                 }
+                swipeBackground.setCornerRadius(cardCornerRadius)
+                swipeBackground.paint.color = colorBackground
                 swipeBackground.draw(c)
-
                 c.save()
 
                 if (dX > 0)
@@ -151,11 +177,11 @@ class TodoListFragment : Fragment () {
     }
 
     private fun onTodoClicked(todo: Todo) {
-        val action = todo.id?.let { TodoListFragmentDirections.actionTodoListToDetail(it) }
-        if (action != null) {
-            findNavController().navigate(action)
+        val action = todo.id?.let {
+            TodoListFragmentDirections.actionTodoListToEdit(it)}
+        action?.let {
+            findNavController().navigate(it) }
         }
-    }
 
     private fun setupRecyclerView() {
         todoRecyclerView.layoutManager = LinearLayoutManager(this.context)

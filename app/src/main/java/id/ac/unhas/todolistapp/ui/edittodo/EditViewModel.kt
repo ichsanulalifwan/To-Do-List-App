@@ -6,18 +6,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import id.ac.unhas.todolistapp.repository.TodoRepository
 import id.ac.unhas.todolistapp.room.todo.Todo
+import kotlinx.coroutines.runBlocking
 
 class EditViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val currentTodo = MutableLiveData<List<Todo>>()
+    private val currenttodo = MutableLiveData<Todo>()
     private val editStatus = MutableLiveData<Boolean>()
     private val todoRepository = TodoRepository(application)
 
-    val observableCurrentTodo: LiveData<List<Todo>>
-        get() = currentTodo
+    val observableCurrentTodo: LiveData<Todo>
+        get() = currenttodo
 
     val observableEditStatus: LiveData<Boolean>
         get() = editStatus
+
+    fun getTodoData(id : Int) = runBlocking {
+            currenttodo.value = todoRepository.getTodo(id)
+    }
 
     fun updateTodo(todo: Todo) {
         editStatus.value = try {
@@ -27,7 +32,4 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
             false
         }
     }
-    /*fun initTodo(id: Int) {
-        currentTodo.value = todoRepository.getTodo(id)
-    }*/
 }

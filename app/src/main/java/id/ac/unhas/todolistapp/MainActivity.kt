@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import kotlinx.android.synthetic.main.todo_list_fragment.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +16,9 @@ class MainActivity : AppCompatActivity() {
 /*        setSupportActionBar(bottomAppBar)*/
 
         setupNavigation()
+
+        /*val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager*/
+        /*val seacrhItem =*/
     }
 
     private fun setupNavigation() {

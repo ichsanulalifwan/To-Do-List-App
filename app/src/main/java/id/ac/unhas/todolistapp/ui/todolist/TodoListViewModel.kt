@@ -3,7 +3,6 @@ package id.ac.unhas.todolistapp.ui.todolist
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import id.ac.unhas.todolistapp.room.todo.Todo
 import id.ac.unhas.todolistapp.repository.TodoRepository
 

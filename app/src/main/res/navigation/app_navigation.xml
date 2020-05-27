@@ -19,8 +19,8 @@
             app:popExitAnim="@anim/pop_exit_slide_up"/>
 
         <action
-            android:id="@+id/action_todoList_to_detail"
-            app:destination="@id/detailTodoFragment"
+            android:id="@+id/action_todoList_to_edit"
+            app:destination="@id/editTodoFragment"
             app:enterAnim="@anim/enter_slide_down"
             app:exitAnim="@anim/exit_slide_down"
             app:popEnterAnim="@anim/pop_enter_slide_up"
@@ -36,22 +36,6 @@
         <action
             android:id="@+id/action_add_to_todoList"
             app:destination="@id/todoFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/detailTodoFragment"
-        android:name="id.ac.unhas.todolistapp.ui.detail.DetailFragment"
-        android:label="@string/label_detailTodo"
-        tools:layout="@layout/detail_fragment" >
-        <action
-            android:id="@+id/action_detail_to_edit"
-            app:destination="@id/editTodoFragment" />
-        <action
-            android:id="@+id/action_detail_to_todoList"
-            app:destination="@id/todoFragment" />
-        <argument
-            android:name="todoId"
-            app:argType="integer" />
     </fragment>
 
     <fragment

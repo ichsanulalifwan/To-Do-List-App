@@ -4,19 +4,17 @@
     <string name="label_todo_list">ToDo List</string>
     <string name="todo_icon" translatable="false">task_icon</string>
     <string name="delete_todo_button">delete_todo_button</string>
-    <string name="error_validating_text">Invalid Input</string>
     <string name="error_loading_data">Error loading data</string>
     <string name="title_todo">What do you want to do?</string>
     <string name="add_btn">Save</string>
     <string name="btn_update">Update</string>
     <string name="label_addTodo">Add Todo Fragment</string>
     <string name="label_editTodo">Edit Todo Fragment</string>
-    <string name="todo_detail_id">id: %s</string>
-    <string name="todo_detail_text">text: %s</string>
+<!--    <string name="todo_detail_id">id: %s</string>
+    <string name="todo_detail_ttitle">title: %s</string>-->
     <string name="format">%1$td/%1$tm/%1$tY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="label_detailTodo">Detail Todo Fragment</string>
     <string name="btn_edit">Edit</string>
     <string name="add_to_do">Add To Do</string>
     <string name="description">Description</string>

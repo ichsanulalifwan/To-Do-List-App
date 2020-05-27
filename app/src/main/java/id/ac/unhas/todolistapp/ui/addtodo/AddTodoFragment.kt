@@ -19,15 +19,13 @@ import kotlinx.android.synthetic.main.add_todo_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+@Suppress("SENSELESS_COMPARISON")
 class AddTodoFragment : Fragment() {
+
     private var todoList: Todo? = null
-
     private lateinit var listViewModel: AddTodoViewModel
-    /*private lateinit var converters : Converters*/
-
     private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("hh:mm s", Locale.getDefault())
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,12 +35,11 @@ class AddTodoFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         listViewModel = ViewModelProviders.of(this).get(AddTodoViewModel::class.java)
-        listViewModel.observableStatus.observe(viewLifecycleOwner, Observer { todo ->
-            todo?.let { render(todo) }
-        })
 
         add_button.setOnClickListener {
-            findNavController().navigate(R.id.action_add_to_todoList)
+            listViewModel.observableStatus.observe(viewLifecycleOwner, Observer { todo ->
+                todo?.let { check(todo) }
+            })
         }
 
         btn_date.setOnClickListener{
@@ -57,21 +54,21 @@ class AddTodoFragment : Fragment() {
                             selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                             val date = dateFormat.format(selectedDate.time)
                             val id = if (todoList != null) todoList?.id else null
-                            val todo = add_todo.text.toString()
+                            val title = add_todo.text.toString()
                             val desc = add_description.text.toString()
                             val create = System.currentTimeMillis()
                             val due = selectedDate.timeInMillis
-                            if (add_todo != null || add_description != null) {
+                            if (title != null && desc != null && due != null) {
                                 val add = Todo(
                                     id = id,
-                                    todo = todo,
+                                    todo = title,
                                     desc = desc,
                                     createDate = create,
                                     dueDate = due
                                 )
                                 listViewModel.addTodo(add)
                             }
-                            else Toast.makeText(context,"Please Input Title and Description! ", Toast.LENGTH_SHORT).show()
+                            else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
                             add_date.setText(date)
                         },
                         now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
@@ -94,14 +91,13 @@ class AddTodoFragment : Fragment() {
         }
     }
 
-    private fun render(status: Boolean) {
+    private fun check(status: Boolean) {
         when (status) {
-            true -> {
-                view?.let {
-                   Toast.makeText(context,"Added To-Do Successfully", Toast.LENGTH_SHORT).show()
-                }
+            true ->  {
+                findNavController().navigate(R.id.action_add_to_todoList)
+                Toast.makeText(context,"Successfully Add To-Do", Toast.LENGTH_SHORT).show()
             }
-            false -> add_todo.error = getString(R.string.error_validating_text)
+            false -> Toast.makeText(context,"Failed to Add To-Do", Toast.LENGTH_SHORT).show()
         }
     }
 }

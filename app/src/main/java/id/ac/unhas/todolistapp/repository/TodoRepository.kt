@@ -6,6 +6,7 @@ import id.ac.unhas.todolistapp.room.AppDatabase
 import id.ac.unhas.todolistapp.room.todo.Todo
 import id.ac.unhas.todolistapp.room.todo.TodoDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -13,11 +14,15 @@ class TodoRepository(application: Application) {
 
     private val todoDao: TodoDao
     private var todoList: LiveData<List<Todo>>?
+    private var sortCreatedDate: LiveData<List<Todo>>
+    private var sortDueDate: LiveData<List<Todo>>
 
     init {
         val db = AppDatabase.getDatabase(application.applicationContext)
         todoDao = db!!.todoDao()
         todoList = todoDao.loadAllTodo()
+        sortCreatedDate = todoDao.sortCreated()
+        sortDueDate = todoDao.sortDue()
     }
 
     fun getTodoList(): LiveData<List<Todo>>? {
@@ -25,18 +30,16 @@ class TodoRepository(application: Application) {
     }
 
     fun sortByCreated(): LiveData<List<Todo>>? {
-        return todoDao.sortCreated()
+        return sortCreatedDate
     }
 
     fun sortByDue(): LiveData<List<Todo>>? {
-        return todoDao.sortDue()
+        return sortDueDate
     }
 
-    /*fun getTodo(id: Int) = runBlocking{
-        this.launch(Dispatchers.IO) {
-            todoDao.loadSingle(id)
-        }
-    }*/
+    suspend fun getTodo(id: Int): Todo {
+        return todoDao.loadSingle(id)
+    }
 
     fun insert(todo: Todo) = runBlocking {
         this.launch(Dispatchers.IO) {

@@ -9,13 +9,12 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
-import id.ac.unhas.todolistapp.time.Converters
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
 typealias ClickListener = (Todo) -> Unit
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class TodoAdapter (
     private val clickListener: ClickListener
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
@@ -52,7 +51,7 @@ class TodoAdapter (
         notifyDataSetChanged()
     }
 
-    fun converter(value: Long?): Date? {
+    private fun converter(value: Long?): Date? {
             return value?.let { Date(it) }
         }
 
