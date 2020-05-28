@@ -22,7 +22,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomappbar.BottomAppBar
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
 import kotlinx.android.synthetic.main.todo_list_fragment.*
@@ -57,6 +56,7 @@ class TodoListFragment : Fragment () {
         val searchView = menu.findItem(R.id.search)?.actionView as androidx.appcompat.widget.SearchView
         searchView.setSearchableInfo(serarchManager.getSearchableInfo(requireActivity().componentName))
         searchView.maxWidth = Integer.MAX_VALUE
+        searchView.queryHint = "Search ToDo List"
         searchView.imeOptions = EditorInfo.IME_ACTION_DONE
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -87,9 +87,6 @@ class TodoListFragment : Fragment () {
                 })
                 Toast.makeText(context, "Sorted By Due Date", Toast.LENGTH_SHORT).show()
             }
-            R.id.search -> {
-                return true
-            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -97,15 +94,12 @@ class TodoListFragment : Fragment () {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
-        deleteIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_delete_24px) }!!
-
         todoListViewModel = ViewModelProvider(this).get(TodoListViewModel::class.java)
-        todoListViewModel.getTodo()?.observe(viewLifecycleOwner, Observer { todo ->
-            todo?.let { render(todo) }
-        })
 
-        bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+        setupRecyclerView()
+        observeData()
+
+        deleteIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_delete_24px) }!!
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
@@ -187,6 +181,10 @@ class TodoListFragment : Fragment () {
 
     override fun onResume() {
         super.onResume()
+        observeData()
+    }
+
+    private fun observeData() {
         todoListViewModel.getTodo()?.observe(viewLifecycleOwner, Observer { todo ->
             todo?.let { render(todo) }
         })
@@ -210,7 +208,7 @@ class TodoListFragment : Fragment () {
             TodoListFragmentDirections.actionTodoListToEdit(it)}
         action?.let {
             findNavController().navigate(it) }
-        }
+    }
 
     private fun setupRecyclerView() {
         todoRecyclerView.layoutManager = LinearLayoutManager(this.context)

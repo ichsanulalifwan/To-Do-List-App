@@ -10,18 +10,18 @@ import kotlinx.coroutines.runBlocking
 
 class EditViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val currenttodo = MutableLiveData<Todo>()
+    private val currentTodo = MutableLiveData<Todo>()
     private val editStatus = MutableLiveData<Boolean>()
     private val todoRepository = TodoRepository(application)
 
     val observableCurrentTodo: LiveData<Todo>
-        get() = currenttodo
+        get() = currentTodo
 
     val observableEditStatus: LiveData<Boolean>
         get() = editStatus
 
     fun getTodoData(id : Int) = runBlocking {
-            currenttodo.value = todoRepository.getTodo(id)
+        currentTodo.value = todoRepository.getTodo(id)
     }
 
     fun updateTodo(todo: Todo) {

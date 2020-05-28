@@ -42,7 +42,7 @@
         android:id="@+id/todo_description_input"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="160dp"
         android:layout_margin="16dp"
         android:hint="@string/description"
         android:layout_marginBottom="500dp"
@@ -94,51 +94,49 @@
             android:clickable="true"
             android:focusable="true"
             android:layout_gravity="center"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="72dp"
             android:background="@drawable/ic_date_range_24px"
-            android:backgroundTintMode="src_in"
-            app:backgroundTint="@color/orange"/>
+            app:backgroundTint="@color/red"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/time_layout"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:id="@+id/reminder_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/date_layout"
+        app:layout_constraintStart_toStartOf="@id/date_layout"
+        app:layout_constraintTop_toBottomOf="@id/date_layout"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_layout"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/todo_time_input"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:hint="@string/dueTime">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/add_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_time"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:clickable="true"
-            android:focusable="true"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_alarm_24px"
+            android:tint="@color/red"
             android:layout_gravity="center"
-            android:layout_marginStart="40dp"
-            android:background="@drawable/ic_access_time_24px"
-            android:backgroundTintMode="src_in"
-            app:backgroundTint="@color/orange"/>
+            android:layout_marginEnd="2dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reminderText"
+            style="?attr/textAppearanceCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/amber"
+            android:layout_gravity="center"
+            android:text="@string/notify_me"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkRemind"
+            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"
+            app:useMaterialThemeColors="false"/>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -151,5 +149,5 @@
         app:icon="@drawable/ic_save_24px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/time_layout" />
+        app:layout_constraintTop_toBottomOf="@id/reminder_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

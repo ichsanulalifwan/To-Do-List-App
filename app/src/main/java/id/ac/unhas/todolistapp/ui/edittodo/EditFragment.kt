@@ -1,4 +1,4 @@
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "SENSELESS_COMPARISON")
 
 package id.ac.unhas.todolistapp.ui.edittodo
 
@@ -18,19 +18,20 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
+import id.ac.unhas.todolistapp.util.AlarmReceiver
 import kotlinx.android.synthetic.main.edit_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Suppress("SENSELESS_COMPARISON")
 class EditFragment : Fragment() {
 
     private lateinit var viewModel: EditViewModel
+    private lateinit var alarmReceiver: AlarmReceiver
     private val args by navArgs<EditFragmentArgs>()
+    private var dateAndTimeFormat = SimpleDateFormat("hh:mm, dd MMM YYYY", Locale.getDefault())
     private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
-    private var timeFormat = SimpleDateFormat("hh:mm s", Locale.getDefault())
+    private var timeFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
     private var initialValue = ContentValues()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,90 +42,81 @@ class EditFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         viewModel = ViewModelProviders.of(this).get(EditViewModel::class.java)
+
         viewModel.observableCurrentTodo.observe(viewLifecycleOwner, Observer { currentTodo ->
             currentTodo?.let { initCurrentTodo(currentTodo) } ?: todoNotFound()
         })
+
         viewModel.getTodoData(args.todoId)
 
-        update_button.setOnClickListener {
-            viewModel.observableEditStatus.observe(viewLifecycleOwner, Observer { editStatus ->
-                editStatus?.let { check(editStatus) }
-            })
+        alarmReceiver = AlarmReceiver()
 
+        update_button.setOnClickListener {
             val id = args.todoId
             val title = update_title.text.toString()
             val desc = update_description.text.toString()
             val create = initialValue.get("created_date")
             val dueDate = initialValue.get("update_dueDate")
-            val dueTIme = initialValue.get("update_dueTime")
             val update = System.currentTimeMillis()
-            if(title != null && desc!= null && dueDate != null && dueTIme != null) {
+            if(title != "" && desc != "" && dueDate != null) {
                 val add = Todo(
                     id = id,
                     todo = title,
                     desc = desc,
                     createDate = create as Long,
                     dueDate = dueDate as Long,
-                    dueTime = dueTIme as Long,
                     updateDate = update
                 )
                 viewModel.updateTodo(add)
+
+                if(checkRemindUpdate.isChecked) context?.let { it1 -> alarmReceiver.setReminder(it1, dueDate - 3600 * 1000, title) }
+                else context?.let { it1 -> alarmReceiver.setReminder(it1, dueDate, title) }
             } else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
-        }
 
-        btn_updateDate.setOnClickListener {
-            val now = Calendar.getInstance()
-            val datePicker =
-                context?.let { it1 ->
-                    DatePickerDialog(
-                        it1, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                            val selectedDate = Calendar.getInstance()
-                            selectedDate.set(Calendar.YEAR, year)
-                            selectedDate.set(Calendar.MONTH, month)
-                            selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                            val date = dateFormat.format(selectedDate.time)
-                            update_dueDate.setText(date)
-                            initialValue.put("update_dueDate", selectedDate.timeInMillis)
-                        },
-                        now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
-                }
-            datePicker?.show()
+            viewModel.observableEditStatus.observe(viewLifecycleOwner, Observer { editStatus ->
+                editStatus?.let { check(editStatus) }
+            })
         }
-
-        btn_updateTime.setOnClickListener{
-            val nowTime = Calendar.getInstance()
-            val timePicker = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                val selectedTime = Calendar.getInstance()
-                selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                selectedTime.set(Calendar.MINUTE, minute)
-                val time = timeFormat.format(selectedTime.time)
-                update_dueTime.setText(time)
-                initialValue.put("update_dueTime", selectedTime.timeInMillis)
-            },
-                nowTime.get(Calendar.HOUR_OF_DAY), nowTime.get(Calendar.MINUTE), false
-            )
-            timePicker.show()
-        }
+        btn_updateDate.setOnClickListener {pickDateTime()}
     }
 
     private fun initCurrentTodo(todo: Todo) {
         createdDateView.text = dateFormat.format(todo.createDate)
         createdTimeView.text = timeFormat.format(todo.createDate)
+        initialValue.put("created_date", todo.createDate)
         update_title.setText(todo.todo)
         update_description.setText(todo.desc)
-        update_dueDate.setText(dateFormat.format(todo.dueDate))
-        update_dueTime.setText(timeFormat.format(todo.dueTime))
-        initialValue.put("created_date", todo.createDate)
+        update_dueDate.setText(dateAndTimeFormat.format(todo.dueDate))
+    }
+
+    private fun pickDateTime() {
+        val dueDateTime = Calendar.getInstance()
+        val startYear = dueDateTime.get(Calendar.YEAR)
+        val startMonth = dueDateTime.get(Calendar.MONTH)
+        val startDay = dueDateTime.get(Calendar.DAY_OF_MONTH)
+        val startHour = dueDateTime.get(Calendar.HOUR_OF_DAY)
+        val startMinute = dueDateTime.get(Calendar.MINUTE)
+
+        DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            TimePickerDialog(requireContext(), TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                val selectedDateTime = Calendar.getInstance()
+                selectedDateTime.set(year, month, day, hour, minute)
+                initialValue.put("update_dueDate", selectedDateTime.timeInMillis)
+                val showDateTime = dateAndTimeFormat.format(selectedDateTime.time)
+                update_dueDate.setText(showDateTime)
+            }, startHour, startMinute, false).show()
+        }, startYear, startMonth, startDay).show()
     }
 
     private fun check(status: Boolean) {
         when (status) {
             true -> {
                 findNavController().navigate(R.id.action_edit_to_todoList)
-                Toast.makeText(context,"Successfully Update To-Do ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"To-Do Updated Successfully", Toast.LENGTH_SHORT).show()
             }
-            false -> Toast.makeText(context,"Failed to Update To-Do", Toast.LENGTH_SHORT).show()
+            false -> Toast.makeText(context,"To-Do Update Failed", Toast.LENGTH_SHORT).show()
         }
     }
 

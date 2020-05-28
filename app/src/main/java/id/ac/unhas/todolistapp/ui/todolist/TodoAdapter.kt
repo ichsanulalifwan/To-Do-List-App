@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
-import java.security.AlgorithmConstraints
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -22,8 +21,7 @@ class TodoAdapter (
     private val clickListener: ClickListener
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
-    private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
-    private var updateFormat = SimpleDateFormat("EEE, dd MMM YYYY", Locale.getDefault())
+    private var dateFormat = SimpleDateFormat("EEEE, dd MMM YYYY", Locale.getDefault())
     private var todoList = listOf<Todo>()
     private var todoFilterList: List<Todo> = arrayListOf()
 
@@ -42,17 +40,22 @@ class TodoAdapter (
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val current = todoFilterList[position]
-/*        val filter = filteredTodo[position]*/
         val create = dateFormat.format(converter(current.createDate))
-        val due = dateFormat.format(converter(current.dueDate))
-        val update = updateFormat.format(converter(current.updateDate))
+        val dueDate = dateFormat.format(converter(current.dueDate))
+        val update = dateFormat.format(converter(current.updateDate))
         holder.tvTodo.text = current.todo
         holder.tvDesc.text = current.desc
-        holder.tvCreated.text = create
-        holder.tvDue.text = due
-        holder.tvUpdate.text = update
-/*        holder.itemView(filterTodo[position]),*/
+        holder.tvDueDate.text = dueDate
 
+        if(current.createDate == current.updateDate){
+            holder.tvCreated.text = create
+            holder.tvAddView.visibility = View.VISIBLE
+            holder.tvUpdatedView.visibility = View.GONE
+        } else {
+            holder.tvUpdate.text = update
+            holder.tvAddView.visibility = View.GONE
+            holder.tvUpdatedView.visibility = View.VISIBLE
+        }
 
         holder.itemView.setOnClickListener {
             clickListener(todoFilterList[holder.adapterPosition])
@@ -70,8 +73,8 @@ class TodoAdapter (
         return object : Filter() {
             override fun performFiltering(constraints: CharSequence?): FilterResults {
                 val charSearch = constraints.toString().toLowerCase(Locale.ROOT).trim()
-                if (charSearch.isEmpty()){
-                    todoFilterList = todoList
+                todoFilterList = if (charSearch.isEmpty()){
+                    todoList
                 } else {
                     val resultList = arrayListOf<Todo>()
                     for (item in todoList) {
@@ -79,7 +82,7 @@ class TodoAdapter (
                             resultList.add(item)
                         }
                     }
-                    todoFilterList = resultList
+                    resultList
                 }
                 val filterResults = FilterResults()
                 filterResults.values = todoFilterList
@@ -106,7 +109,9 @@ class TodoAdapter (
         val tvTodo: TextView = itemView.findViewById(R.id.todo_name_text_view)
         val tvDesc: TextView = itemView.findViewById(R.id.todo_description)
         val tvCreated: TextView = itemView.findViewById(R.id.addDate_text_view)
-        val tvDue: TextView = itemView.findViewById(R.id.dueDate_text_view)
+        val tvDueDate: TextView = itemView.findViewById(R.id.dueDate_text_view)
         val tvUpdate: TextView = itemView.findViewById(R.id.updateDate_text_view)
+        val tvAddView: TextView = itemView.findViewById(R.id.add_date_text_view)
+        val tvUpdatedView: TextView = itemView.findViewById(R.id.update_date_text_view)
     }
 }

@@ -2,8 +2,7 @@
 
 package id.ac.unhas.todolistapp.ui.addtodo
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
 import android.content.ContentValues
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,17 +15,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
+import id.ac.unhas.todolistapp.util.AlarmReceiver
 import kotlinx.android.synthetic.main.add_todo_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Suppress("SENSELESS_COMPARISON")
 class AddTodoFragment : Fragment() {
 
-    private var todoList: Todo? = null
     private lateinit var listViewModel: AddTodoViewModel
-    private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
-    private var timeFormat = SimpleDateFormat("hh:mm s", Locale.getDefault())
+    private lateinit var alarmReceiver: AlarmReceiver
+    private var todoList: Todo? = null
+    private var dateAndTimeFormat = SimpleDateFormat("hh:mm, dd MMM YYYY", Locale.getDefault())
     private var initialValue = ContentValues()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -36,76 +35,67 @@ class AddTodoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         listViewModel = ViewModelProviders.of(this).get(AddTodoViewModel::class.java)
 
+        alarmReceiver = AlarmReceiver()
+
         add_button.setOnClickListener {
-            val id = if (todoList != null) todoList?.id else null
+            val id = if (todoList != null) todoList?.id  else null
             val title = add_todo.text.toString()
             val desc = add_description.text.toString()
             val create = System.currentTimeMillis()
-            val dueDate = initialValue.get("add_dueDate")
-            val dueTime = initialValue.get("add_dueTime")
             val update = System.currentTimeMillis()
-            if (title != null && desc != null && dueDate != null && dueTime != null) {
+            val dueDate = initialValue.get("add_dueDate")
+            if (title != "" && desc != "" && dueDate != null) {
             val add = Todo(
                 id = id,
                 todo = title,
                 desc = desc,
                 createDate = create,
-                dueDate = dueDate as Long,
-                dueTime =  dueTime as Long,
-                updateDate = update
+                updateDate = update,
+                dueDate = dueDate as Long
             )
                 listViewModel.addTodo(add)
-            } else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
+
+                if(checkRemind.isChecked) context?.let { it1 -> alarmReceiver.setReminder(it1, dueDate - 3600 * 1000, title) }
+                else context?.let { it1 -> alarmReceiver.setReminder(it1, dueDate, title) }
+            }
+            else Toast.makeText(context,"Please Enter Data Correctly!", Toast.LENGTH_SHORT).show()
 
             listViewModel.observableStatus.observe(viewLifecycleOwner, Observer { todo ->
                 todo?.let { check(todo) }
             })
         }
+        btn_date.setOnClickListener { pickDateTime() }
+    }
 
-        btn_date.setOnClickListener{
-            val now = Calendar.getInstance()
-            val datePicker =
-                context?.let { it1 ->
-                    DatePickerDialog(
-                        it1, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                            val selectedDate = Calendar.getInstance()
-                            selectedDate.set(Calendar.YEAR, year)
-                            selectedDate.set(Calendar.MONTH, month)
-                            selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                            val date = dateFormat.format(selectedDate.time)
-                            add_date.setText(date)
-                            initialValue.put("add_dueDate", selectedDate.timeInMillis)
-                        },
-                        now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
-                }
-            datePicker?.show()
-        }
+    private fun pickDateTime() {
+        val dueDateTime = Calendar.getInstance()
+        val startYear = dueDateTime.get(Calendar.YEAR)
+        val startMonth = dueDateTime.get(Calendar.MONTH)
+        val startDay = dueDateTime.get(Calendar.DAY_OF_MONTH)
+        val startHour = dueDateTime.get(Calendar.HOUR_OF_DAY)
+        val startMinute = dueDateTime.get(Calendar.MINUTE)
 
-        btn_time.setOnClickListener {
-            val nowTime = Calendar.getInstance()
-            val timePicker = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                val selectedTime = Calendar.getInstance()
-                selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                selectedTime.set(Calendar.MINUTE, minute)
-                val time = timeFormat.format(selectedTime.time)
-                add_time.setText(time)
-                initialValue.put("add_dueTime", selectedTime.timeInMillis)
-            },
-                nowTime.get(Calendar.HOUR_OF_DAY), nowTime.get(Calendar.MINUTE), false
-            )
-            timePicker.show()
-        }
+        DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            TimePickerDialog(requireContext(), TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                val selectedDateTime = Calendar.getInstance()
+                selectedDateTime.set(year, month, day, hour, minute)
+                initialValue.put("add_dueDate", selectedDateTime.timeInMillis)
+                val showDateTime = dateAndTimeFormat.format(selectedDateTime.time)
+                add_date.setText(showDateTime)
+            }, startHour, startMinute, false).show()
+        }, startYear, startMonth, startDay).show()
     }
 
     private fun check(status: Boolean) {
         when (status) {
             true ->  {
                 findNavController().navigate(R.id.action_add_to_todoList)
-                Toast.makeText(context,"Successfully Add To-Do", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"To-Do Added Successfully", Toast.LENGTH_SHORT).show()
             }
-            false -> Toast.makeText(context,"Failed to Add To-Do", Toast.LENGTH_SHORT).show()
+            false -> Toast.makeText(context,"To-Do Add Failed", Toast.LENGTH_SHORT).show()
         }
     }
 }
