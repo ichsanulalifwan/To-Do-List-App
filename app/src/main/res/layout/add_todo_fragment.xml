@@ -42,7 +42,7 @@
         android:id="@+id/todo_description_input"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="320dp"
         android:layout_margin="16dp"
         android:hint="@string/description"
         android:layout_marginBottom="500dp"

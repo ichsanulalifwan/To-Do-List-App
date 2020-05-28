@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -35,6 +36,8 @@ class AddTodoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.hide()
 
         listViewModel = ViewModelProviders.of(this).get(AddTodoViewModel::class.java)
 
@@ -92,7 +95,7 @@ class AddTodoFragment : Fragment() {
     private fun check(status: Boolean) {
         when (status) {
             true ->  {
-                findNavController().navigate(R.id.action_add_to_todoList)
+                findNavController().popBackStack()
                 Toast.makeText(context,"To-Do Added Successfully", Toast.LENGTH_SHORT).show()
             }
             false -> Toast.makeText(context,"To-Do Add Failed", Toast.LENGTH_SHORT).show()

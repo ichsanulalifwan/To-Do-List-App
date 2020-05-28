@@ -41,7 +41,8 @@
         app:fabAlignmentMode="center"
         app:fabCradleMargin="@dimen/bottom_app_bar_fab_cradle_margin"
         app:fabCradleRoundedCornerRadius="@dimen/bottom_app_bar_fab_cradle_corner_radius"
-        app:hideOnScroll="true"/>
+        app:hideOnScroll="true"
+        app:menu="@menu/menu_main"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

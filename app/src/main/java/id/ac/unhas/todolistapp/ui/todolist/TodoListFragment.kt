@@ -26,7 +26,7 @@ import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
 import kotlinx.android.synthetic.main.todo_list_fragment.*
 
-@Suppress("UNREACHABLE_CODE")
+
 class TodoListFragment : Fragment () {
 
     private lateinit var todoListViewModel: TodoListViewModel
@@ -40,14 +40,13 @@ class TodoListFragment : Fragment () {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.todo_list_fragment, container, false)
-        if (activity is AppCompatActivity) {
-            (activity as AppCompatActivity).setSupportActionBar(bottomAppBar)
-        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
+        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -116,12 +115,11 @@ class TodoListFragment : Fragment () {
                 alert.setTitle("Are you sure to delete this?")
                 alert.setPositiveButton("Yes") { dialog, _ ->
                     todoListViewModel.deleteTodo(rvAdapter.getTodoAt(viewHolder.adapterPosition))
+                    observeData()
                     dialog.dismiss()
                 }
                 alert.setNegativeButton("No") { dialog, _ ->
-                    todoListViewModel.getTodo()?.observe(viewLifecycleOwner, Observer { todo ->
-                        todo?.let { render(todo) }
-                    })
+                    observeData()
                     dialog.dismiss()
                 }
                 alert.show()

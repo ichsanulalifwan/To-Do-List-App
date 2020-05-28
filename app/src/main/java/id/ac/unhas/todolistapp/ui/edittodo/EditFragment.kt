@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -42,6 +44,8 @@ class EditFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.hide()
 
         viewModel = ViewModelProviders.of(this).get(EditViewModel::class.java)
 
@@ -113,7 +117,7 @@ class EditFragment : Fragment() {
     private fun check(status: Boolean) {
         when (status) {
             true -> {
-                findNavController().navigate(R.id.action_edit_to_todoList)
+                findNavController().popBackStack()
                 Toast.makeText(context,"To-Do Updated Successfully", Toast.LENGTH_SHORT).show()
             }
             false -> Toast.makeText(context,"To-Do Update Failed", Toast.LENGTH_SHORT).show()

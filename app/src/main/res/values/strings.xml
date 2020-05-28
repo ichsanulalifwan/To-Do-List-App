@@ -26,5 +26,5 @@
     <string name="search_hint">Search</string>
     <string name="created">Created</string>
     <string name="created_date_view">Created Date</string>
-    <string name="notify_me">Notify Me 1 Hour Before</string>
+    <string name="notify_me">Notify Me One Hour Before</string>
 </resources>
