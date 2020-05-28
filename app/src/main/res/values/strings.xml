@@ -8,11 +8,9 @@
     <string name="title_todo">What do you want to do?</string>
     <string name="add_btn">Save</string>
     <string name="btn_update">Update</string>
-    <string name="label_addTodo">Add Todo</string>
-    <string name="label_editTodo">Edit Todo</string>
+    <string name="label_addTodo">Add To-Do</string>
+    <string name="label_editTodo">Edit To-Do</string>
     <string name="never_update">Never Updated</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="btn_edit">Edit</string>
     <string name="add_to_do">Add To Do</string>
     <string name="description">Description</string>
@@ -21,10 +19,11 @@
     <string name="update">Updated</string>
     <string name="due_date">Due</string>
     <string name="dueDate">Due Date</string>
-    <string name="sort_by_created_date">Sort By Created Date</string>
+    <string name="sort_by_created_date">Sort By Date Created</string>
     <string name="sort_by_due_date">Sort By Due Date</string>
     <string name="search_hint">Search</string>
     <string name="created">Created</string>
     <string name="created_date_view">Created Date</string>
     <string name="notify_me">Notify Me One Hour Before</string>
+    <string name="sort_by">sortBy</string>
 </resources>

@@ -45,16 +45,20 @@ class TodoAdapter (
         val update = dateFormat.format(converter(current.updateDate))
         holder.tvTodo.text = current.todo
         holder.tvDesc.text = current.desc
+        holder.tvCreated.text = create
         holder.tvDueDate.text = dueDate
+        holder.tvUpdate.text = update
 
         if(current.createDate == current.updateDate){
-            holder.tvCreated.text = create
+            holder.tvCreated.visibility = View.VISIBLE
             holder.tvAddView.visibility = View.VISIBLE
+            holder.tvUpdate.visibility = View.GONE
             holder.tvUpdatedView.visibility = View.GONE
         } else {
-            holder.tvUpdate.text = update
-            holder.tvAddView.visibility = View.GONE
+            holder.tvUpdate.visibility = View.VISIBLE
             holder.tvUpdatedView.visibility = View.VISIBLE
+            holder.tvCreated.visibility = View.GONE
+            holder.tvAddView.visibility = View.GONE
         }
 
         holder.itemView.setOnClickListener {

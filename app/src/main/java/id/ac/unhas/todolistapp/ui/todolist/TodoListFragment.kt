@@ -10,10 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -46,7 +44,6 @@ class TodoListFragment : Fragment () {
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
-        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -60,8 +57,7 @@ class TodoListFragment : Fragment () {
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 rvAdapter.getFilter().filter(query)
-                Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -77,14 +73,12 @@ class TodoListFragment : Fragment () {
                 todoListViewModel.sortCreated()?.observe(viewLifecycleOwner, Observer { todo ->
                     todo?.let { render(todo) }
                 })
-                Toast.makeText(context, "Sorted By Created Date", Toast.LENGTH_SHORT).show()
             }
 
             R.id.action_sortDue -> {
                 todoListViewModel.sortDue()?.observe(viewLifecycleOwner, Observer { todo ->
                     todo?.let { render(todo) }
                 })
-                Toast.makeText(context, "Sorted By Due Date", Toast.LENGTH_SHORT).show()
             }
         }
         return super.onOptionsItemSelected(item)

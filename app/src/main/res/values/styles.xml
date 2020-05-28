@@ -12,10 +12,4 @@
         <item name="textAppearanceBody2">@style/TextAppearance.AndroidToDo.Title</item>
         <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
     </style>
-    
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
 </resources>

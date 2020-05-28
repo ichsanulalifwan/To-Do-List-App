@@ -32,8 +32,7 @@
         android:id="@+id/addTodoFragment"
         android:name="id.ac.unhas.todolistapp.ui.addtodo.AddTodoFragment"
         android:label="@string/label_addTodo"
-        tools:layout="@layout/add_todo_fragment" >
-    </fragment>
+        tools:layout="@layout/add_todo_fragment" />
 
     <fragment
         android:id="@+id/editTodoFragment"

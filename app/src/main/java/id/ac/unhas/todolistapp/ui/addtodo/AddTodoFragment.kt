@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -36,8 +35,6 @@ class AddTodoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.hide()
 
         listViewModel = ViewModelProviders.of(this).get(AddTodoViewModel::class.java)
 

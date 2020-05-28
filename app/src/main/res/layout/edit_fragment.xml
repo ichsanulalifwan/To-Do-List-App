@@ -8,59 +8,28 @@
     tools:context=".ui.edittodo.EditFragment">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/headerEditTextView"
-        style="?attr/textAppearanceHeadline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:text="@string/edit_to_do"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/created_View"
         style="?attr/textAppearanceCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/created_date_view"
-        app:layout_constraintBottom_toBottomOf="@id/headerEditTextView"
-        app:layout_constraintEnd_toEndOf="@id/todo_title_update"
-        app:layout_constraintStart_toEndOf="@id/headerEditTextView"
-        app:layout_constraintTop_toTopOf="@id/headerEditTextView"
-        app:layout_constraintEnd_toStartOf="@id/created"/>
+        app:layout_constraintEnd_toStartOf="@id/createdDateandTimeView"
+        app:layout_constraintStart_toStartOf="@id/todo_title_update"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/created"
-        android:layout_width="80dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="12dp"
-        app:layout_constraintBottom_toBottomOf="@id/headerEditTextView"
-        app:layout_constraintEnd_toEndOf="@id/todo_title_update"
-        app:layout_constraintStart_toEndOf="@id/created_View"
-        app:layout_constraintTop_toTopOf="@id/headerEditTextView"
-        android:orientation="vertical">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/createdDateView"
+    <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/createdDateandTimeView"
             style="?attr/textAppearanceCaption"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/created_date_view"
             android:textColor="@color/green"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/created_View"
+            app:layout_constraintTop_toTopOf="parent"
             android:textSize="12sp" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/createdTimeView"
-            style="?attr/textAppearanceCaption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/created_date_view"
-            android:textColor="@color/green"
-            android:layout_marginBottom="5dp"
-            android:textSize="12sp" />
-    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/todo_title_update"
@@ -71,7 +40,7 @@
         android:hint="@string/title_todo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerEditTextView">
+        app:layout_constraintTop_toBottomOf="@+id/created_View">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/update_title"
@@ -87,7 +56,7 @@
         android:id="@+id/todo_description_update"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="240dp"
         android:layout_margin="16dp"
         android:hint="@string/description"
         android:layout_marginBottom="500dp"

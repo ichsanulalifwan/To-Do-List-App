@@ -7,26 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.addtodo.AddTodoFragment">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/headerTextView"
-        style="?attr/textAppearanceHeadline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:text="@string/add_to_do"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/todo_name_input"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:layout_margin="16dp"
         android:hint="@string/title_todo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerTextView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/add_todo"
@@ -42,7 +33,7 @@
         android:id="@+id/todo_description_input"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="240dp"
         android:layout_margin="16dp"
         android:hint="@string/description"
         android:layout_marginBottom="500dp"

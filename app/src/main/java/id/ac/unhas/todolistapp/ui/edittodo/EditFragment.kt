@@ -12,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -31,8 +29,6 @@ class EditFragment : Fragment() {
     private lateinit var alarmReceiver: AlarmReceiver
     private val args by navArgs<EditFragmentArgs>()
     private var dateAndTimeFormat = SimpleDateFormat("hh:mm, dd MMM YYYY", Locale.getDefault())
-    private var dateFormat = SimpleDateFormat("dd MMM, YYYY", Locale.getDefault())
-    private var timeFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
     private var initialValue = ContentValues()
 
     override fun onCreateView(
@@ -44,8 +40,6 @@ class EditFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.hide()
 
         viewModel = ViewModelProviders.of(this).get(EditViewModel::class.java)
 
@@ -87,8 +81,7 @@ class EditFragment : Fragment() {
     }
 
     private fun initCurrentTodo(todo: Todo) {
-        createdDateView.text = dateFormat.format(todo.createDate)
-        createdTimeView.text = timeFormat.format(todo.createDate)
+        createdDateandTimeView.text = dateAndTimeFormat.format(todo.createDate)
         initialValue.put("created_date", todo.createDate)
         update_title.setText(todo.todo)
         update_description.setText(todo.desc)
