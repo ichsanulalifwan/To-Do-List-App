@@ -1,4 +1,4 @@
-package id.ac.unhas.todolistapp.util
+package id.ac.unhas.todolistapp.receiver
 
 import android.app.*
 import android.content.BroadcastReceiver

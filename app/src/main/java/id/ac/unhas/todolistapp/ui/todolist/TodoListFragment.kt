@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
+import id.ac.unhas.todolistapp.ui.ClickListener
+import id.ac.unhas.todolistapp.ui.TodoAdapter
 import kotlinx.android.synthetic.main.todo_list_fragment.*
 
 

@@ -18,7 +18,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
-import id.ac.unhas.todolistapp.util.AlarmReceiver
+import id.ac.unhas.todolistapp.receiver.AlarmReceiver
 import kotlinx.android.synthetic.main.edit_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*

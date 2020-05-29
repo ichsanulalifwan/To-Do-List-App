@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import id.ac.unhas.todolistapp.R
 import id.ac.unhas.todolistapp.room.todo.Todo
-import id.ac.unhas.todolistapp.util.AlarmReceiver
+import id.ac.unhas.todolistapp.receiver.AlarmReceiver
 import kotlinx.android.synthetic.main.add_todo_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*

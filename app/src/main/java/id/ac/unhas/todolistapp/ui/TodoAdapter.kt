@@ -1,4 +1,4 @@
-package id.ac.unhas.todolistapp.ui.todolist
+package id.ac.unhas.todolistapp.ui
 
 import android.os.Build
 import android.view.LayoutInflater
