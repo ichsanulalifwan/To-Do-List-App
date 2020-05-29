@@ -110,15 +110,15 @@
             android:layout_gravity="center"
             android:layout_marginStart="72dp"
             android:background="@drawable/ic_date_range_24px"
-            app:backgroundTint="@color/red"/>
+            app:backgroundTint="@color/maroon"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/reminderUpdate_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/date_layout"
-        app:layout_constraintStart_toStartOf="@id/date_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date_layout"
         android:layout_marginTop="8dp"
         android:orientation="horizontal">
@@ -129,15 +129,14 @@
             android:src="@drawable/ic_add_alarm_24px"
             android:tint="@color/red"
             android:layout_gravity="center"
-            android:layout_marginEnd="2dp"/>
+            android:layout_marginStart="16dp"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/reminderTextUpdate"
-            style="?attr/textAppearanceCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/amber"
+            android:textColor="@color/charcoral"
             android:layout_gravity="center"
             android:text="@string/notify_me"
             app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +147,7 @@
             style="@style/Widget.AppCompat.CompoundButton.CheckBox"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="80dp"
             android:layout_height="wrap_content"
             app:useMaterialThemeColors="false"/>
     </LinearLayout>

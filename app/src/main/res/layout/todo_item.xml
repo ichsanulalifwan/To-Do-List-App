@@ -9,6 +9,8 @@
     android:layout_width="match_parent"
     android:layout_margin="8dp"
     android:clickable="true"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
     android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,7 +105,7 @@
             app:layout_constraintStart_toStartOf="@id/todo_description"
             android:src="@drawable/ic_access_time_24px"
             android:tintMode="src_in"
-            android:tint="@color/teal"/>
+            android:tint="@color/charcoral"/>
 
         <LinearLayout
             android:id="@+id/update"
@@ -123,6 +125,7 @@
                 android:textSize="12sp"
                 android:paddingStart="8dp"
                 android:ellipsize="end"
+                android:textColor="@color/charcoral"
                 android:textAlignment="textStart"
                 android:text="@string/update"
                 tools:ignore="RtlSymmetry" />
@@ -132,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
-                android:textColor="@color/lime"
+                android:textColor="@color/mustard"
                 android:textSize="12sp"
                 android:ellipsize="end"
                 android:textAlignment="textStart"
@@ -159,6 +162,7 @@
                 android:ellipsize="end"
                 android:textAlignment="textStart"
                 android:text="@string/created"
+                android:textColor="@color/charcoral"
                 tools:ignore="RtlSymmetry" />
 
             <com.google.android.material.textview.MaterialTextView
