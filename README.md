@@ -1,7 +1,7 @@
 # ToDo List App
 
 
-## Built With
+### Built With
 
 * Kotlin & Coroutines
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
@@ -9,6 +9,12 @@
 * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
 * [Navigation](https://developer.android.com/guide/navigation)
 * [Material Components](https://material.io/components)
+
+### Features
+
+* Searching by Title
+* Sorting by Date
+* Notification Reminder
 
 <p align="center">
   <img width="200" alt="portfolio_view" src="https://user-images.githubusercontent.com/55717141/83254881-02361100-a1e2-11ea-9060-a2b47553afb6.png"> 
